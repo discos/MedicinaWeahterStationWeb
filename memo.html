@@ -1,0 +1,26 @@
+<script type = "text/javascript">                
+
+    function drawWindDir() {
+
+       var JsonWindDir = JSON.parse($.ajax({
+          url: "dbWindDir.php",     
+          dataType:"json",        
+          async: false
+       }).responseText);
+             
+       //debugger;
+
+       // Define the chart to be drawn.
+       var tableWindDir = new google.visualization.arrayToDataTable(JsonWindDir);         
+       // Set chart options
+       var options = {
+       title:'Wind Direction',
+       legend: 'none'
+       };
+
+       // Instantiate and draw the chart.
+       var chartWindDir = new google.visualization.ScatterChart(document.getElementById ('containerWindDirection'));
+       chartWindDir.draw(tableWindDir, options);
+    }
+   google.charts.setOnLoadCallback(drawWindDir);
+ </script>

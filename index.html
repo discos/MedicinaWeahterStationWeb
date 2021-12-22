@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Google Charts Tutorial</title>
+      <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js">
+      </script>
+      <script type = "text/javascript">
+         google.charts.load('current', {packages: ['corechart']});     
+      </script>
+      <link rel="stylesheet" href="main.css">
+      <style>
+         html {height: 100%; width: 100%; }
+         body {height: 100%; width: 100%; margin: 10; padding: 0;}            
+     </style>
+     <link rel="shortcut icon" href="#">
+     <script type="text/javascript" src="gotoDiv.js"></script>
+     <script type="text/javascript" src="drawField.js"></script>
+     <script type="text/javascript" src="getLastValue.js"></script>
+   </head>
+   
+   <body>
+      <script>                 
+         $(window).on("load", function(){            
+            drawField('idDrawWindSpeed', 'Wind', 'WEEK','wind_speed_ave', '3.6');       
+            drawField('idDrawWindDir', 'Wind', 'WEEK','wind_dir_ave');            
+            drawField('idDrawTemperature', 'PHT', 'WEEK','temperature');
+            drawField('idDrawHumidity', 'PHT', 'WEEK','humidity');
+            drawField('idDrawPressure', 'PHT', 'WEEK','pressure');
+            drawField('idDrawRainAccumulation', 'Rain', 'WEEK','rain_ammount');
+            drawField('idDrawHailDuration', 'Hail', 'WEEK','hail_duration');
+            drawField('idDrawHailIntensity', 'Hail', 'WEEK','hail_intensity');
+
+            var WindSpeedValueEl= document.getElementById("WindSpeedValue");
+            WindSpeedValueEl.innerHTML= getLastValue('Wind','wind_speed_ave', '3.6');
+            var WindSpeedValueEl= document.getElementById("WindDirValue");
+            WindSpeedValueEl.innerHTML= getLastValue('Wind','wind_dir_ave');
+            var WindSpeedValueEl= document.getElementById("TemperatureValue");
+            WindSpeedValueEl.innerHTML= getLastValue('PHT','temperature');
+            var WindSpeedValueEl= document.getElementById("HumidityValue");
+            WindSpeedValueEl.innerHTML= getLastValue('PHT','humidity');
+            var WindSpeedValueEl= document.getElementById("PressureValue");
+            WindSpeedValueEl.innerHTML= getLastValue('PHT','pressure');
+            var WindSpeedValueEl= document.getElementById("RainAccumulationValue");
+            WindSpeedValueEl.innerHTML= getLastValue('Rain','rain_ammount');
+            var WindSpeedValueEl= document.getElementById("HailDurationValue");
+            WindSpeedValueEl.innerHTML= getLastValue('Hail','hail_duration');
+            var WindSpeedValueEl= document.getElementById("HailIntensityValue");
+            WindSpeedValueEl.innerHTML= getLastValue('Hail','hail_intensity');
+         });   
+         var windowResizeTimer;
+         $(window).on("resize", function(){
+            clearTimeout(windowResizeTimer);
+            windowResizeTimer = setTimeout(function(){
+               drawField('idDrawWindSpeed', 'Wind', 'WEEK','wind_speed_ave', '3.6');       
+               drawField('idDrawWindDir', 'Wind', 'WEEK','wind_dir_ave');
+               drawField('idDrawTemperature', 'PHT', 'WEEK','temperature');            
+               drawField('idDrawHumidity', 'PHT', 'WEEK','humidity');
+               drawField('idDrawPressure', 'PHT', 'WEEK','pressure');
+               drawField('idDrawRainAccumulation', 'Rain', 'WEEK','rain_ammount');
+               drawField('idDrawHailDuration', 'Hail', 'WEEK','hail_duration');
+               drawField('idDrawHailIntensity', 'Hail', 'WEEK','hail_intensity');
+            }, 100);
+         });          
+      </script>
+
+      <div style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+         
+         <div style="flex: 1; height: 30%; margin-top: 5%; margin-bottom: 5%;">
+            <div style="display: flex; flex-direction: column;">
+               <div style="margin-left: 10px; color: #b44; font-family:'Arial Black'; font-size: 16px; letter-spacing: .21em;">Menu</div>  
+               <button id="GoToWindSpeed" class="link" onclick="gotoDiv('idWindSpeed');">Wind speed</button>     
+               <button id="GoToWindDir" class="link" onclick="gotoDiv('idWindDir');">Wind direction</button>     
+               <button id="GoToWindDir" class="link" onclick="gotoDiv('idTemperature');">Air temperature</button>  
+               <button id="GoToWindDir" class="link" onclick="gotoDiv('idHumidity');">Air humidity</button>   
+               <button id="GoToWindDir" class="link" onclick="gotoDiv('idPressure');">Air pressure</button>
+               <button id="GoToWindDir" class="link" onclick="gotoDiv('idRainAccumulation');">Rain accumulation</button>
+               <button id="GoToWindDir" class="link" onclick="gotoDiv('idHailDuration');">Hail duration</button>
+               <button id="GoToWindDir" class="link" onclick="gotoDiv('idHailIntensity');">Hail intensity</button>     
+            </div>
+         </div>
+
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idWindSpeed" class= "div_container">                          
+               <div class= "container_title">Wind speed</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawWindSpeed" class = "chart" > </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "WindSpeedValue" class="value_text"></div>
+                        <div class= "value_text_bottom">Km/h</div>     
+                        <div class= "buttons_group">
+                           <button class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawWindSpeed', 'Wind', this.value,'wind_speed_ave', '3.6')" >Last Year</button>                      
+                           <button class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawWindSpeed', 'Wind', this.value,'wind_speed_ave', '3.6')">Last Month</button>                             
+                           <button class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawWindSpeed', 'Wind', this.value,'wind_speed_ave', '3.6')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawWindSpeed', 'Wind', this.value,'wind_speed_ave', '3.6')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idWindDir"class= "div_container">                          
+               <div class= "container_title">Wind direction</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawWindDir" class = "chart"> </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "WindDirValue" class="value_text"></div>
+                        <div class="value_text_bottom">Degree</div>     
+                        <div class="buttons_group">
+                           <button  class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawWindDir', 'Wind', this.value,'wind_dir_ave')" >Last Year</button>                      
+                           <button  class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawWindDir', 'Wind', this.value,'wind_dir_ave')">Last Month</button>                             
+                           <button  class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawWindDir', 'Wind', this.value,'wind_dir_ave')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawWindDir', 'Wind', this.value,'wind_dir_ave')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idTemperature" class= "div_container">                          
+               <div class= "container_title">Air temperature</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawTemperature" class = "chart"> </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "TemperatureValue" class="value_text"></div>
+                        <div class="value_text_bottom">Degree</div>     
+                        <div class="buttons_group">
+                           <button  class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawTemperature', 'PHT', this.value,'temperature')" >Last Year</button>                      
+                           <button  class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawTemperature', 'PHT', this.value,'temperature')">Last Month</button>                             
+                           <button  class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawTemperature', 'PHT', this.value,'temperature')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawTemperature', 'PHT', this.value,'temperature')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idHumidity" class= "div_container">                          
+               <div class= "container_title">Air humidity</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawHumidity"class= "chart" > </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "HumidityValue" class="value_text"></div>
+                        <div class="value_text_bottom">Percentage</div>     
+                        <div class="buttons_group">
+                           <button  class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawHumidity', 'PHT', this.value,'humidity')" >Last Year</button>                      
+                           <button  class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawHumidity', 'PHT', this.value,'humidity')">Last Month</button>                             
+                           <button  class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawHumidity', 'PHT', this.value,'humidity')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawHumidity', 'PHT', this.value,'humidity')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idPressure" class= "div_container">                          
+               <div class= "container_title">Air pressure</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawPressure"class= "chart" > </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "PressureValue" class="value_text"></div>
+                        <div class="value_text_bottom">Millibar</div>     
+                        <div class="buttons_group">
+                           <button  class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawPressure', 'PHT', this.value,'pressure')" >Last Year</button>                      
+                           <button  class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawPressure', 'PHT', this.value,'pressure')">Last Month</button>                             
+                           <button  class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawPressure', 'PHT', this.value,'pressure')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawPressure', 'PHT', this.value,'pressure')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idRainAccumulation" class= "div_container">                          
+               <div class= "container_title">Rain accumulation</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawRainAccumulation"class= "chart" > </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "RainAccumulationValue" class="value_text"></div>
+                        <div class="value_text_bottom">Millimeters</div>     
+                        <div class="buttons_group">
+                           <button  class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawRainAccumulation', 'Rain', this.value,'rain_ammount')" >Last Year</button>                      
+                           <button  class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawRainAccumulation', 'Rain', this.value,'rain_ammount')">Last Month</button>                             
+                           <button  class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawRainAccumulation', 'Rain', this.value,'rain_ammount')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawRainAccumulation', 'Rain', this.value,'rain_ammount')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idHailDuration" class= "div_container">                          
+               <div class= "container_title">Hail duration</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawHailDuration"class= "chart" > </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "HailDurationValue" class="value_text"></div>
+                        <div class="value_text_bottom">Time</div>     
+                        <div class="buttons_group">
+                           <button  class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawHailDuration', 'Hail', this.value,'hail_duration')" >Last Year</button>                      
+                           <button  class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawHailDuration', 'Hail', this.value,'hail_duration')">Last Month</button>                             
+                           <button  class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawHailDuration', 'Hail', this.value,'hail_duration')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawHailDuration', 'Hail', this.value,'hail_duration')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+         <div style="flex: 2; height: 100%;width: 100%;">
+            <div id = "idHailIntensity" class= "div_container">                          
+               <div class= "container_title">Hail intensity</div>  
+               <div  style = "flex:10;" > 
+                  <div  style = "display: flex; height: 100%;" > 
+                     <div id= "idDrawHailIntensity"class= "chart" > </div>                       
+                     <div style="flex:1;">
+                        <div class= "value_text_top">Now</div>  
+                        <div id= "HailIntensityValue" class="value_text"></div>
+                        <div class="value_text_bottom">Intensity</div>     
+                        <div class="buttons_group">
+                           <button  class="button_query" type="submit" value="YEAR" onclick="drawField('idDrawHailIntensity', 'Hail', this.value,'hail_intensity')" >Last Year</button>                      
+                           <button  class="button_query" type="submit" value="MONTH" onclick="drawField('idDrawHailIntensity', 'Hail', this.value,'hail_intensity')">Last Month</button>                             
+                           <button  class="button_query" type="submit" value="WEEK" onclick="drawField('idDrawHailIntensity', 'Hail', this.value,'hail_intensity')">Last Week</button>                             
+                           <button class="button_query" type="submit" value="DAY" onclick="drawField('idDrawHailIntensity', 'Hail', this.value,'hail_intensity')">Last Day</button>                    
+                        </div>
+                     </div>
+                  </div>
+               </div>         
+            </div>   
+         </div>
+
+
+   </div>
